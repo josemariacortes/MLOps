@@ -9,7 +9,7 @@ EXPOSE 5000
 
 COPY . .
 
-RUN mkdir static uploads
+RUN mkdir -p static uploads
 
 CMD ["python", "app.py"]
 
