@@ -73,6 +73,13 @@ def upload_file():
                 for name, model in models.items():
                     # JMCC -- DONE -->
                     prediction = model.predict(upper_half.reshape(1, -1))[0]
+                    # Normalización para evitar franjas negras
+                    prediction = prediction - prediction.min()
+                    if prediction.max() > 0:
+                        prediction = prediction / prediction.max()
+
+                    # Escalar a 0–255
+                    prediction = (prediction * 255).astype("uint8")
                     # <-- JMCC -- DONE
                     print(f"{name} prediction: {prediction}", flush=True)  # Debugging line
 

@@ -58,6 +58,26 @@ Then access http://localhost:5005
 
 This project is a webapp that allows the user to upload an image of a face and the model will take the top half of the given face and predict the bottom half with 4 different models. Again, the models should be downloaded and copied to the models folder
 
+### Black Banding Problems Solved:
+
+Black bands appear in ExtraTrees and KNN due to the way the models work.
+
+**ExtraTreesRegressor** does not extrapolate continuous values; it only returns averages that tend toward low values, generating dark areas.
+
+**KNeighborsRegressor** averages "neighbors," giving smoothed values ​​and resulting in dark gray. Since the model has a low tonal range, it appears black.
+
+**Solution without Model Improvement**
+
+To avoid this, we post-process the prediction, as it returns values ​​that are too low, out of range, or lack contrast.
+
+To solve this, we do the following:
+
+- Remove the offset.
+
+- Rescale to the full range to improve contrast.
+
+- Convert to unit8 to ensure the image format is valid.
+
 ### Running the project
 
 ```shell
