@@ -11,15 +11,24 @@ Each project have a Dockerfile, and two of them a webapp in Flask
 This is just a jupyter notebook environment. It has preloaded two scripts, one for each of the other projects
 
 | File                                  | Description                                                                                                                                                               |
-|---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | plot_digits_classification.ipynb      | Script that download the source data, prepare it and train the model to identify digits from an image                                                                     |
 | plot_multiouput_face_completion.ipynb | Script to download the source data, prepare it and train 4 models to complete a face from the top half of a provided one. It traing 4 models to compare different outputs |
 
 ### Running the project
 
+Windows 11 Powershell
+
 ```shell
 docker build -t jupyter-local .
-docker run -p 8888:8888 -v "$(pwd)":/home/jovyan/work jupyter-local
+docker run -d -p 8888:8888 -v ${PWD}:/home/jovyan/work jupyter-local
+```
+
+Other OS
+
+```shell
+docker build -t jupyter-local .
+docker run -p 8888:8888 -v "$(PWD)":/home/jovyan/work jupyter-local
 ```
 
 Then access http://localhost:8888
@@ -32,7 +41,15 @@ This project is a webapp that allows the user to upload an image and the model w
 
 ```shell
 docker build -t digits-app .
-docker run -p 5005:5000 digits-app
+docker run -d digits-app --name -p 5005:5000 digits-app
+```
+
+### Stop the project
+
+Stop and clear the container
+
+```shell
+docker rm -f digits-app
 ```
 
 Then access http://localhost:5005
@@ -45,10 +62,17 @@ This project is a webapp that allows the user to upload an image of a face and t
 
 ```shell
 docker build -t faces-app .
-docker run -p 5010:5000 faces-app
+docker run -d --name faces-app -p 5010:5000 faces-app
 ```
+
 Then access http://localhost:5010
 
+### Stop the project
+
+Stop and clear the container
+
+```shell
+docker rm -f faces-app
+```
 
 Note: There are hidden difficulties in this one, that's why this is optional
-
